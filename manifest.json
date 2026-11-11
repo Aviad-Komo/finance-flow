@@ -1,0 +1,15 @@
+{
+  "name": "תקציב פלוס",
+  "short_name": "תקציב פלוס",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d1110",
+  "theme_color": "#3b6e5f",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/Aviad-Komo/finance-flow/dd6f4d2a92ffc241cc87a2e2afe1ff61ceb9537b/Gemini_Generated_Image_heyze6heyze6heyz.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
