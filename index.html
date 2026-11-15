@@ -418,20 +418,6 @@
                 <span id="modalOverBudgetMessage">שים לב: פעולה זו תעביר את הקטגוריה מעבר ל-100% מהתקציב!</span>
             </div>
 
-            <div id="expenseReceiptBox" class="bg-zen-50 dark:bg-[#16231f] border border-zen-500/30 p-3.5 rounded-2xl mb-4 space-y-2">
-                <div class="text-xs font-bold-custom text-zen-600 dark:text-zen-400 flex items-center justify-between">
-                    <span>📸 צילום קבלה או הזנה חכמה:</span>
-                    <label class="cursor-pointer bg-zen-500 text-white px-2.5 py-1 rounded-lg text-[11px] hover:bg-zen-600 shadow-sm">
-                        צלם קבלה 📷
-                        <input type="file" accept="image/*" capture="environment" onchange="handleCameraCapture(event)" class="hidden">
-                    </label>
-                </div>
-                <div class="flex gap-2">
-                    <input type="text" id="smartParseInput" placeholder="או כתוב: סופר 452.1 אשראי..." class="flex-1 bg-white dark:bg-[#0d1110] border dark:border-[#1f2b27] rounded-xl p-2 text-xs">
-                    <button type="button" onclick="parseSmartText()" class="bg-zen-500 hover:bg-zen-600 text-white px-3 py-2 rounded-xl text-xs font-semibold">פענח</button>
-                </div>
-            </div>
-
             <form id="transactionForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
                 <div class="grid grid-cols-2 gap-2 bg-gray-100 dark:bg-[#1f2b27] p-1 rounded-xl">
                     <button type="button" id="typeExpBtn" onclick="setFormType('expense')" class="py-2 rounded-lg font-semibold text-xs transition-all bg-white dark:bg-[#141c1a] shadow-sm">הוצאה</button>
@@ -439,8 +425,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1">סכום (₪) - ניתן לחשב ישירות (למשל 120+45)</label>
-                    <input type="number" id="txAmount" oninput="checkFormBudgetImpact()" required step="0.01" class="w-full bg-gray-50 dark:bg-[#0d1110] border dark:border-[#1f2b27] rounded-xl p-3 text-lg font-bold-custom focus:outline-none focus:border-zen-500">
+                    <label class="block text-xs text-gray-500 mb-1">סכום (₪) - ניתן להקליד חישוב חופשי (למשל 120+45)</label>
+                    <input type="text" id="txAmount" oninput="checkFormBudgetImpact()" required placeholder="0.00" class="w-full bg-gray-50 dark:bg-[#0d1110] border dark:border-[#1f2b27] rounded-xl p-3 text-lg font-bold-custom focus:outline-none focus:border-zen-500">
                 </div>
 
                 <div id="categoryContainer">
@@ -477,7 +463,7 @@
                 </div>
 
                 <div class="flex items-center justify-between bg-gray-50 dark:bg-[#0d1110] p-3 rounded-xl border dark:border-[#1f2b27]">
-                    <span class="text-xs text-gray-600 dark:text-gray-300" id="recurringLabelText">הוצאה קבועה?</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-300" id="recurringLabelText">הוצאה קבועה / מסגרת?</span>
                     <input type="checkbox" id="txIsRecurring" class="w-5 h-5 accent-zen-500 rounded cursor-pointer">
                 </div>
 
@@ -503,7 +489,7 @@
         </div>
     </div>
 
-    <!-- View / Edit Transaction Details Modal -->
+    <!-- View / Edit Transaction Details Modal (עם חופש עריכה מלא) -->
     <div id="txDetailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-[#141c1a] w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative border dark:border-[#1f2b27]">
             <div id="modalHeaderBanner" class="p-4 text-white font-bold-custom flex justify-between items-center bg-zen-500">
@@ -514,11 +500,18 @@
             <div class="p-6 space-y-4">
                 <div id="txDetailContent" class="space-y-3 text-xs"></div>
 
-                <div id="txEditFormContainer" class="hidden space-y-3 bg-gray-50 dark:bg-[#0d1110] p-4 rounded-2xl border dark:border-[#1f2b27]">
-                    <h4 class="font-bold-custom text-xs text-zen-500 mb-2">עריכת תנועה</h4>
+                <div id="txEditFormContainer" class="hidden space-y-3 bg-gray-50 dark:bg-[#0d1110] p-4 rounded-2xl border dark:border-[#1f2b27] max-h-[60vh] overflow-y-auto">
+                    <h4 class="font-bold-custom text-xs text-zen-500 mb-2">עריכה חופשית של הפעולה</h4>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">סוג פעולה</label>
+                        <select id="editTxType" class="w-full bg-white dark:bg-[#141c1a] border dark:border-[#1f2b27] rounded-xl p-2 text-sm">
+                            <option value="expense">הוצאה</option>
+                            <option value="income">הכנסה</option>
+                        </select>
+                    </div>
                     <div>
                         <label class="block text-xs text-gray-500 mb-1">סכום (₪)</label>
-                        <input type="number" id="editTxAmount" step="0.01" class="w-full bg-white dark:bg-[#141c1a] border dark:border-[#1f2b27] rounded-xl p-2 text-sm">
+                        <input type="text" id="editTxAmount" class="w-full bg-white dark:bg-[#141c1a] border dark:border-[#1f2b27] rounded-xl p-2 text-sm font-bold-custom">
                     </div>
                     <div id="editCategoryWrapper">
                         <label class="block text-xs text-gray-500 mb-1">קטגוריה</label>
@@ -531,6 +524,10 @@
                     <div>
                         <label class="block text-xs text-gray-500 mb-1">תיאור</label>
                         <input type="text" id="editTxDescription" class="w-full bg-white dark:bg-[#141c1a] border dark:border-[#1f2b27] rounded-xl p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">תיוג (#)</label>
+                        <input type="text" id="editTxTag" class="w-full bg-white dark:bg-[#141c1a] border dark:border-[#1f2b27] rounded-xl p-2 text-sm">
                     </div>
                     <div>
                         <label class="block text-xs text-gray-500 mb-1">תאריך ביצוע</label>
@@ -547,18 +544,6 @@
                     <button onclick="saveEditedTx()" class="flex-1 bg-zen-500 hover:bg-zen-600 text-white font-bold-custom py-2.5 rounded-xl text-xs">שמור שינויים</button>
                     <button onclick="cancelEditMode()" class="bg-gray-300 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-bold-custom py-2.5 px-4 rounded-xl text-xs">ביטול</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recurring Popup Modal -->
-    <div id="recurringModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-[#141c1a] w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4 border dark:border-[#1f2b27]">
-            <h3 class="font-bold-custom text-lg text-zen-500">התראת תחילת חודש 🌿</h3>
-            <p class="text-xs text-gray-600 dark:text-gray-300">האם תרצה להחיל אוטומטית את כל ההכנסות וההוצאות הקבועות לחודש החדש?</p>
-            <div class="flex gap-2 pt-2">
-                <button onclick="confirmRecurringTransactions()" class="flex-1 bg-zen-500 hover:bg-zen-600 text-white font-bold-custom py-2.5 rounded-xl text-xs">כן, הוסף אוטומטית</button>
-                <button onclick="closeRecurringModal()" class="bg-gray-200 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-bold-custom py-2.5 px-4 rounded-xl text-xs">לא תודה</button>
             </div>
         </div>
     </div>
@@ -605,7 +590,7 @@
         let allFamilyUsers = new Set();
         let dismissedAlertsMonthKey = '';
 
-        // Excel-like color matrix: 10 base colors, each with 7 depth shades
+        // Excel-like color matrix
         const excelColorMatrix = [
             ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8', '#64748b', '#334155'], // Slate
             ['#fef2f2', '#fee2e2', '#fecaca', '#fca5a5', '#f87171', '#ef4444', '#b91c1c'], // Red
@@ -636,14 +621,12 @@
 
         window.initAppFlow = function() {
             applyTheme();
-            
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
                 if (splash) {
                     splash.style.opacity = '0';
                     setTimeout(() => splash.remove(), 500);
                 }
-                
                 if (!familyCode) {
                     document.getElementById('setupModal').classList.remove('hidden');
                 } else if (!currentUser) {
@@ -655,81 +638,71 @@
         };
 
         const helpContent = {
-            dashboard: { title: 'עזרה - מסך הבית', text: 'מסך הבית מרכז את מצב התקציב החודשי. • חצים עליונים: מעבר בין חודשים. • עוגת פילוח: התפלגות הוצאות (לחיצה על פלח פותחת פירוט קטגוריה). • כפתור 💡 בראש העמוד מעניק הדרכה נקודתית.' },
-            expensesList: { title: 'עזרה - הוצאות', text: 'כאן מוצגות כל קטגוריות ההוצאות בצורה פרוסה ונוחה. לחיצה על כל קטגוריה תפתח את פירוט התנועות המלא שלה לאותו חודש.' },
-            forecast: { title: 'עזרה - בניית תקציב', text: 'מערכת בניית תקציב ותחזית ל-3 החודשים הקרובים, המחושבת אוטומטית לפי ממוצע ההוצאות ההיסטורי של המשפחה.' },
-            annual: { title: 'עזרה - סיכום שנתי', text: 'תצוגה שנתית המרכזת עמודת הוצאה חודשית בפועל מחולקת בצבעי קטגוריות. לחיצה על חודש בעמודות תפתח ישירות את אותו חודש במסך הבית.' },
-            settings: { title: 'עזרה - הגדרות מערכת', text: 'ניהול נוח בשורות נקיות: • קטגוריות: עריכת תקציבים, צבעים והגדרת התראות. • דרכי תשלום: ניהול אמצעי תשלום. • מרחב משפחתי: העתקת קוד משפחה.' },
-            detail: { title: 'עזרה - פירוט קטגוריה', text: 'מעקב פרטני אחר ניצול התקציב של קטגוריה ספציפית, כולל רשימת כל התנועות ששויכו אליה בחודש הנבחר.' }
+            dashboard: { title: 'עזרה - מסך הבית', text: 'מסך הבית מרכז את התקציב החודשי, כולל פעולות עתידיות שנקבעו כמסגרת לחודש. • חצים: מעבר חודשים. • עוגה: התפלגות הוצאות.' },
+            expensesList: { title: 'עזרה - הוצאות', text: 'ריכוז קטגוריות ההוצאה וניצול התקציב החודשי.' },
+            forecast: { title: 'עזרה - תחזית', text: 'תחזית חודשית עתידית מבוססת נתונים קודמים.' },
+            annual: { title: 'עזרה - סיכום שנתי', text: 'פריסה שנתית של ההוצאות בפועל.' },
+            settings: { title: 'עזרה - הגדרות', text: 'ניהול קטגוריות, צבעים בסגנון Excel וקוד משפחה.' }
         };
 
         function openHelpForCurrentView() {
             let view = currentActiveView;
-            if (view === 'detail') view = 'detail';
-            let info = helpContent[view] || { title: 'עזרה', text: 'מסך זה מציג נתונים פיננסיים ושליטה מלאה במרחב המשפחתי.' };
+            let info = helpContent[view] || { title: 'עזרה', text: 'ניהול תזרים כספי.' };
             document.getElementById('helpModalTitle').innerText = info.title;
             document.getElementById('helpModalText').innerText = info.text;
             document.getElementById('helpModal').classList.remove('hidden');
         }
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.add('hidden');
-        }
+        function closeHelpModal() { document.getElementById('helpModal').classList.add('hidden'); }
 
         function showFamilyCodeInput(joining) {
             isNewFamilyCreator = !joining;
             document.getElementById('setupStep1').classList.add('hidden');
             document.getElementById('setupStep2').classList.remove('hidden');
-            
             if (joining) {
                 document.getElementById('setupTitle').innerText = 'הצטרפות למרחב קיים';
-                document.getElementById('setupStep2Desc').innerText = 'הקש את קוד המשפחה שקיבלת מבן/בת הזוג:';
+                document.getElementById('setupStep2Desc').innerText = 'הקש קוד משפחה:';
                 document.getElementById('familyCodeField').value = '';
             } else {
-                document.getElementById('setupTitle').innerText = 'יצירת מרחב משפחתי חדש';
+                document.getElementById('setupTitle').innerText = 'יצירת מרחב חדש';
                 let generatedCode = 'fam_' + Math.random().toString(36).substring(2, 8);
-                document.getElementById('setupStep2Desc').innerText = 'נוצר קוד משפחה ייחודי עבורכם. שתף אותו עם בן/בת הזוג או הבוחנים:';
+                document.getElementById('setupStep2Desc').innerText = 'נוצר קוד משפחה ייחודי:';
                 document.getElementById('familyCodeField').value = generatedCode;
             }
         }
 
         function submitFamilySetup() {
             const code = document.getElementById('familyCodeField').value.trim();
-            if (!code) return alert('נא להזין קוד משפחה תקין');
+            if (!code) return alert('נא להזין קוד');
             familyCode = code;
             localStorage.setItem('family_app_code', familyCode);
-            
             document.getElementById('setupStep2').classList.add('hidden');
-            document.getElementById('setupTitle').innerText = 'הגדרת שמך האישי';
+            document.getElementById('setupTitle').innerText = 'הגדרת שמך';
             document.getElementById('setupStep3').classList.remove('hidden');
         }
 
         function finishUserNameSetup() {
             const name = document.getElementById('userNameField').value.trim();
-            if (!name) return alert('נא להזין את שמך');
+            if (!name) return alert('נא להזין שם');
             currentUser = name;
             localStorage.setItem('family_app_user', currentUser);
             document.getElementById('setupModal').classList.add('hidden');
             updateUserUI();
-
-            if (isNewFamilyCreator) {
-                paymentMethods = {};
-            }
+            if (isNewFamilyCreator) paymentMethods = {};
             saveToDB();
             connectToFirebaseDB();
         }
 
         function promptForUserName() {
-            let name = prompt("הכנס את שמך האישי באפליקציה (לזיהוי פעולותיך):", "אביעד");
-            if (!name || !name.trim()) name = "אורח";
-            currentUser = name.trim();
+            let name = prompt("הכנס שם משתמש:", "אביעד");
+            currentUser = (name && name.trim()) ? name.trim() : "אורח";
             localStorage.setItem('family_app_user', currentUser);
             updateUserUI();
             connectToFirebaseDB();
         }
 
         function promptChangeUser() {
-            let name = prompt("החלף שם משתמש נוכחי:", currentUser);
+            let name = prompt("החלף שם משתמש:", currentUser);
             if (name && name.trim()) {
                 currentUser = name.trim();
                 localStorage.setItem('family_app_user', currentUser);
@@ -741,7 +714,7 @@
         }
 
         function handleLogout() {
-            if (confirm('האם ברצונך להתנתק מהמרחב הנוכחי?')) {
+            if (confirm('להתנתק מהמרחב?')) {
                 localStorage.removeItem('family_app_code');
                 localStorage.removeItem('family_app_user');
                 location.reload();
@@ -757,9 +730,7 @@
                     transactions = data.transactions || {};
                     if (data.categories) {
                         Object.keys(data.categories).forEach(c => {
-                            if (data.categories[c].showAlerts === undefined) {
-                                data.categories[c].showAlerts = true;
-                            }
+                            if (data.categories[c].showAlerts === undefined) data.categories[c].showAlerts = true;
                         });
                         categories = data.categories;
                     }
@@ -776,18 +747,14 @@
         function extractFamilyUsers() {
             allFamilyUsers.clear();
             if (currentUser) allFamilyUsers.add(currentUser);
-            Object.values(transactions).forEach(tx => {
-                if (tx.user) allFamilyUsers.add(tx.user);
-            });
+            Object.values(transactions).forEach(tx => { if (tx.user) allFamilyUsers.add(tx.user); });
             renderUserFilterButtons();
         }
 
         function renderUserFilterButtons() {
             const container = document.getElementById('userFilterButtonsContainer');
             if (!container) return;
-            container.innerHTML = `
-                <button type="button" onclick="setUserFilter('')" id="filterUsrAll" class="px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedUserFilter === '' ? 'bg-zen-500 text-white' : 'bg-gray-200 dark:bg-[#1f2b27]'}">הכל</button>
-            `;
+            container.innerHTML = `<button type="button" onclick="setUserFilter('')" id="filterUsrAll" class="px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedUserFilter === '' ? 'bg-zen-500 text-white' : 'bg-gray-200 dark:bg-[#1f2b27]'}">הכל</button>`;
             allFamilyUsers.forEach(usr => {
                 let isActive = selectedUserFilter === usr;
                 const btn = document.createElement('button');
@@ -799,16 +766,8 @@
             });
         }
 
-        function setUserFilter(usr) {
-            selectedUserFilter = usr;
-            renderUserFilterButtons();
-            renderApp();
-        }
-
-        function updateUserUI() {
-            const badge = document.getElementById('headerUserBadge');
-            if (badge) badge.innerText = `משתמש: ${currentUser}`;
-        }
+        function setUserFilter(usr) { selectedUserFilter = usr; renderUserFilterButtons(); renderApp(); }
+        function updateUserUI() { const badge = document.getElementById('headerUserBadge'); if (badge) badge.innerText = `משתמש: ${currentUser}`; }
 
         function toggleTheme() {
             currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -829,36 +788,22 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar.classList.contains('translate-x-full')) {
-                sidebar.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
-            }
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
         }
 
-        function toggleFilterPanel() {
-            document.getElementById('filterPanel').classList.toggle('hidden');
-        }
-
+        function toggleFilterPanel() { document.getElementById('filterPanel').classList.toggle('hidden'); }
         function toggleAccordion(id) {
             const el = document.getElementById(id);
             const arrow = document.getElementById('arr_' + id);
-            if (el.classList.contains('hidden')) {
-                el.classList.remove('hidden');
-                arrow.innerText = '▲';
-            } else {
-                el.classList.add('hidden');
-                arrow.innerText = '▼';
-            }
+            el.classList.toggle('hidden');
+            arrow.innerText = el.classList.contains('hidden') ? '▼' : '▲';
         }
 
         function switchView(viewName) {
             currentActiveView = viewName;
             const sidebar = document.getElementById('sidebar');
             if (!sidebar.classList.contains('translate-x-full')) toggleSidebar();
-
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById('monthSelectorCard').classList.add('hidden');
 
@@ -893,16 +838,13 @@
         function renderExpensesSpreadList() {
             const container = document.getElementById('spreadExpensesListContainer');
             container.innerHTML = '';
-            
             let catExpenses = {};
             Object.keys(categories).forEach(c => catExpenses[c] = 0);
             Object.values(transactions).forEach(tx => {
                 if (tx.type === 'expense') {
                     let d = new Date(tx.date);
                     if (d.getMonth() + 1 === currentMonth && d.getFullYear() === currentYear) {
-                        if (catExpenses[tx.category] !== undefined) {
-                            catExpenses[tx.category] += Number(tx.amount);
-                        }
+                        if (catExpenses[tx.category] !== undefined) catExpenses[tx.category] += Number(tx.amount);
                     }
                 }
             });
@@ -917,10 +859,7 @@
                 card.onclick = () => openCategoryDetail(catName);
                 card.innerHTML = `
                     <div class="flex justify-between items-center font-bold-custom text-sm">
-                        <span class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full inline-block" style="background-color: ${data.color}"></span>
-                            ${catName}
-                        </span>
+                        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full inline-block" style="background-color: ${data.color}"></span>${catName}</span>
                         <span class="text-xs text-zen-500">₪${spent.toFixed(2)} / ₪${budget} (${pct}%)</span>
                     </div>
                     <div class="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
@@ -985,6 +924,7 @@
                         if (matchesUser) totalIncome += Number(tx.amount);
                     }
                 } else {
+                    // כל הוצאה (כולל עתידיות/קבועות שנקבעו כמסגרת לחודש) נכללת מיד בחישוב ובעוגה
                     if (txM === currentMonth && txY === currentYear) {
                         belongsToDisplayMonth = true;
                         if (matchesUser) {
@@ -1001,10 +941,7 @@
                 if (belongsToDisplayMonth && matchesUser) {
                     let matchesSearch = !searchVal || (tx.description && tx.description.toLowerCase().includes(searchVal)) || (tx.category && tx.category.toLowerCase().includes(searchVal)) || (tx.paymentMethod && tx.paymentMethod.toLowerCase().includes(searchVal)) || (tx.tag && tx.tag.toLowerCase().includes(searchVal));
                     let matchesCat = !filterCatVal || tx.category === filterCatVal;
-
-                    if (matchesSearch && matchesCat) {
-                        recentTxArr.push({ id, ...tx });
-                    }
+                    if (matchesSearch && matchesCat) recentTxArr.push({ id, ...tx });
                 }
             });
 
@@ -1014,11 +951,7 @@
                 let pmKeys = Object.keys(paymentMethods);
                 let pmName = tx.paymentMethod && paymentMethods[tx.paymentMethod] ? tx.paymentMethod : (pmKeys[0] || 'מזומן');
                 let pmData = paymentMethods[pmName] || { icon: '💳', color: '#3b6e5f' };
-                
-                let sideBarColor = '#16a34a';
-                if (tx.type === 'expense') {
-                    sideBarColor = tx.isInstallment ? '#9333ea' : '#dc2626';
-                }
+                let sideBarColor = tx.type === 'expense' ? (tx.isInstallment ? '#9333ea' : '#dc2626') : '#16a34a';
 
                 let displayDesc = tx.description || tx.category || 'פעולה';
                 if (tx.tag) displayDesc += ` <span class="text-zen-500 font-semibold">${tx.tag}</span>`;
@@ -1032,7 +965,7 @@
                         ${tx.type === 'expense' ? `<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px]" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>` : '<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px] bg-green-600">💵 הכנסה</span>'}
                         <div>
                             <div class="font-bold-custom">${displayDesc}</div>
-                            <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• קבוע' : ''}</div>
+                            <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• מסגרת/קבוע' : ''}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
@@ -1048,7 +981,6 @@
             const netEl = document.getElementById('netFlowDisplay');
             netEl.innerText = `₪${net.toFixed(2)}`;
             netEl.className = net < 0 ? 'text-3xl font-bold-custom mb-4 text-red-500' : 'text-3xl font-bold-custom mb-4 text-green-400';
-
             document.getElementById('chartCenterAmount').innerText = `₪${totalExpense.toFixed(2)}`;
 
             renderBudgetAlerts(catExpenses);
@@ -1064,15 +996,10 @@
             const banner = document.getElementById('budgetAlertBanner');
             const list = document.getElementById('budgetAlertsList');
             list.innerHTML = '';
-            
             let mKey = `${currentYear}-${currentMonth}`;
-            if (dismissedAlertsMonthKey === mKey) {
-                banner.classList.add('hidden');
-                return;
-            }
+            if (dismissedAlertsMonthKey === mKey) { banner.classList.add('hidden'); return; }
 
             let alertsCount = 0;
-
             Object.entries(categories).forEach(([catName, data]) => {
                 if (data.showAlerts === false) return;
                 let spent = catExpenses[catName] || 0;
@@ -1090,11 +1017,7 @@
                 }
             });
 
-            if (alertsCount > 0) {
-                banner.classList.remove('hidden');
-            } else {
-                banner.classList.add('hidden');
-            }
+            if (alertsCount > 0) banner.classList.remove('hidden'); else banner.classList.add('hidden');
         }
 
         function dismissBudgetAlerts() {
@@ -1106,7 +1029,6 @@
             const container = document.getElementById('forecastMonthsContainer');
             container.innerHTML = '';
             const monthsNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-
             let totalExpRecorded = 0;
             let monthsWithExpenses = new Set();
             Object.values(transactions).forEach(tx => {
@@ -1127,10 +1049,9 @@
                 card.className = 'p-4 bg-gray-50 dark:bg-[#141c1a] rounded-2xl space-y-2 border dark:border-[#1f2b27]';
                 card.innerHTML = `
                     <div class="flex justify-between items-center font-bold-custom text-sm">
-                        <span>${monthsNames[fMonth - 1]} ${fYear} (תחזית תקציבית)</span>
-                        <span class="text-xs text-zen-500 bg-zen-50 dark:bg-[#1f2b27] px-2.5 py-1 rounded-lg">צפי הוצאות: ~₪${avgMonthlyExp.toFixed(2)}</span>
+                        <span>${monthsNames[fMonth - 1]} ${fYear} (תחזית)</span>
+                        <span class="text-xs text-zen-500 bg-zen-50 dark:bg-[#1f2b27] px-2.5 py-1 rounded-lg">צפי: ~₪${avgMonthlyExp.toFixed(2)}</span>
                     </div>
-                    <div class="text-xs text-gray-400">מבוסס על ממוצע ההוצאות ההיסטורי שלכם לתכנון חודשי עתידי.</div>
                 `;
                 container.appendChild(card);
             }
@@ -1152,9 +1073,7 @@
                         let d = new Date(tx.date);
                         if (d.getMonth() + 1 === mNum && d.getFullYear() === currentYear) {
                             monthTotalExp += Number(tx.amount);
-                            if (monthCatExp[tx.category] !== undefined) {
-                                monthCatExp[tx.category] += Number(tx.amount);
-                            }
+                            if (monthCatExp[tx.category] !== undefined) monthCatExp[tx.category] += Number(tx.amount);
                         }
                     }
                 });
@@ -1181,7 +1100,7 @@
                         }
                     });
                 } else {
-                    barsHTML = `<div class="text-xs text-gray-400 py-2 text-center">אין הוצאות רשומות בחודש זה</div>`;
+                    barsHTML = `<div class="text-xs text-gray-400 py-2 text-center">אין פעולות</div>`;
                 }
 
                 card.innerHTML = `
@@ -1218,27 +1137,19 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: { enabled: false }
-                    },
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } },
                     cutout: '70%',
                     onHover: (evt, elements) => {
                         const headerBar = document.getElementById('chartHeaderBar');
                         if (elements.length > 0) {
                             const index = elements[0].index;
-                            const catName = labels[index];
-                            showCategoryHeaderBar(catName, catExpenses[catName] || 0, backgroundColors[index]);
+                            showCategoryHeaderBar(labels[index], catExpenses[labels[index]] || 0, backgroundColors[index]);
                         } else {
                             headerBar.classList.add('hidden');
                         }
                     },
                     onClick: (evt, elements) => {
-                        if (elements.length > 0) {
-                            const index = elements[0].index;
-                            const catName = labels[index];
-                            openCategoryDetail(catName);
-                        }
+                        if (elements.length > 0) openCategoryDetail(labels[elements[0].index]);
                     }
                 }
             });
@@ -1248,28 +1159,21 @@
             activePopupCat = catName;
             const budget = categories[catName].budget || 0;
             const percent = budget > 0 ? Math.min(100, Math.round((spent / budget) * 100)) : 0;
-            
             document.getElementById('popupCategoryName').innerText = catName;
             document.getElementById('popupCategoryStats').innerText = `₪${spent.toFixed(2)}/₪${budget.toFixed(2)} (${percent}%)`;
-            
             const bar = document.getElementById('popupProgressBar');
             bar.style.width = percent + '%';
             bar.style.backgroundColor = catColor;
-
             document.getElementById('chartHeaderBar').classList.remove('hidden');
         }
 
-        function openCategoryDetail(catName) {
-            activeCategoryDetailName = catName;
-            switchView('detail');
-        }
+        function openCategoryDetail(catName) { activeCategoryDetailName = catName; switchView('detail'); }
 
         function renderCategoryDetailData(spent) {
             const cat = activeCategoryDetailName;
-            
             if (cat === 'הכנסות') {
                 document.getElementById('budgetCardContainer').style.display = 'none';
-                document.getElementById('detailCategoryTitle').innerText = 'פירוט הכנסות משפחתיות';
+                document.getElementById('detailCategoryTitle').innerText = 'פירוט הכנסות';
             } else {
                 document.getElementById('budgetCardContainer').style.display = 'block';
                 document.getElementById('detailCategoryTitle').innerText = cat;
@@ -1279,21 +1183,16 @@
                 const bar = document.getElementById('catBudgetProgressBar');
                 bar.style.width = percent + '%';
                 bar.className = `h-full transition-all ${percent > 100 ? 'bg-red-500' : 'bg-zen-500'}`;
-                document.getElementById('catBudgetRemaining').innerText = `נותר לניצול: ₪${(budget - spent).toFixed(2)}`;
-
-                const indicatorEl = document.getElementById('catComparisonIndicator');
-                indicatorEl.innerText = '🔺 פעילות שוטפת';
-                indicatorEl.className = 'font-bold-custom text-xs text-zen-500';
+                document.getElementById('catBudgetRemaining').innerText = `נותר: ₪${(budget - spent).toFixed(2)}`;
+                document.getElementById('catComparisonIndicator').innerText = '🔺 מסגרת חודשית';
             }
 
             const listEl = document.getElementById('categoryTransactionsList');
             listEl.innerHTML = '';
-
             Object.entries(transactions).forEach(([id, tx]) => {
                 let txDateObj = new Date(tx.date);
                 let txM = txDateObj.getMonth() + 1;
                 let txY = txDateObj.getFullYear();
-
                 let matches = false;
                 if (cat === 'הכנסות') {
                     let targetIncMonth = currentMonth - 1;
@@ -1309,7 +1208,6 @@
                     let pmName = tx.paymentMethod && paymentMethods[tx.paymentMethod] ? tx.paymentMethod : (pmKeys[0] || 'מזומן');
                     let pmData = paymentMethods[pmName] || { icon: '💳', color: '#3b82f6' };
                     let sideBarColor = tx.type === 'expense' ? (tx.isInstallment ? '#9333ea' : '#dc2626') : '#16a34a';
-
                     let displayDesc = tx.description || cat;
                     if (tx.tag) displayDesc += ` <span class="text-zen-500 font-semibold">${tx.tag}</span>`;
 
@@ -1338,114 +1236,81 @@
             selectedTxIdForDetail = id;
             const tx = transactions[id];
             if (!tx) return;
-
             cancelEditMode();
             document.getElementById('txDetailModal').classList.remove('hidden');
 
             const banner = document.getElementById('modalHeaderBanner');
             const title = document.getElementById('modalHeaderTitle');
             const contentEl = document.getElementById('txDetailContent');
-
-            let recurringStatus = tx.isRecurring ? 'קבוע' : 'משתנה';
+            let recurringStatus = tx.isRecurring ? 'מסגרת/קבוע' : 'רגיל';
 
             if (tx.type === 'income') {
                 banner.className = 'p-4 text-white font-bold-custom flex justify-between items-center bg-green-600';
                 title.innerText = `פרטי הכנסה • ${recurringStatus}`;
-                
                 contentEl.innerHTML = `
                     <div class="grid grid-cols-2 gap-2.5">
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="font-bold-custom text-base text-center">${tx.category || 'הכנסה'}</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="font-bold-custom text-base text-green-500 text-center">₪${tx.amount.toFixed(2)}</span>
-                        </div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-center">${tx.category || 'הכנסה'}</span></div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-green-500 text-center">₪${tx.amount.toFixed(2)}</span></div>
                     </div>
                     ${tx.description ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${tx.description}</div>` : ''}
                     <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-xs">${tx.user} • ${tx.date}</div>
                 `;
             } else {
                 banner.className = 'p-4 text-white font-bold-custom flex justify-between items-center bg-red-600';
-                let instTitlePart = tx.installmentsText ? ` (${tx.installmentsText})` : '';
-                title.innerText = `פרטי הוצאה${instTitlePart} • ${recurringStatus}`;
-                
+                title.innerText = `פרטי הוצאה • ${recurringStatus}`;
                 let pmKeys = Object.keys(paymentMethods);
                 let pmName = tx.paymentMethod && paymentMethods[tx.paymentMethod] ? tx.paymentMethod : (pmKeys[0] || 'מזומן');
                 let pmData = paymentMethods[pmName] || { icon: '💳', color: '#3b82f6' };
-
                 let fullDescHTML = tx.description || '';
                 if (tx.tag) fullDescHTML += ` <span class="text-zen-500 font-semibold">${tx.tag}</span>`;
 
                 contentEl.innerHTML = `
                     <div class="grid grid-cols-2 gap-2.5">
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="font-bold-custom text-base text-center">${tx.category}</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="font-bold-custom text-base text-red-400 text-center">₪${tx.amount.toFixed(2)}</span>
-                        </div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-center">${tx.category}</span></div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-red-400 text-center">₪${tx.amount.toFixed(2)}</span></div>
                     </div>
                     ${fullDescHTML ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${fullDescHTML}</div>` : ''}
                     <div class="grid grid-cols-2 gap-2.5">
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="px-2.5 py-1 rounded-lg text-white text-[11px] font-bold-custom inline-block text-center" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center">
-                            <span class="font-semibold text-xs text-center">${tx.user} • ${tx.date}</span>
-                        </div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="px-2.5 py-1 rounded-lg text-white text-[11px] font-bold-custom inline-block text-center" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span></div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-semibold text-xs text-center">${tx.user} • ${tx.date}</span></div>
                     </div>
                 `;
             }
         }
 
-        function closeTxDetailModal() {
-            document.getElementById('txDetailModal').classList.add('hidden');
-            cancelEditMode();
-        }
+        function closeTxDetailModal() { document.getElementById('txDetailModal').classList.add('hidden'); cancelEditMode(); }
 
         function enableEditMode() {
-            if (!confirm('האם לערוך תנועה זו?')) return;
             const tx = transactions[selectedTxIdForDetail];
             if (!tx) return;
-
             document.getElementById('txDetailContent').classList.add('hidden');
             document.getElementById('txEditFormContainer').classList.remove('hidden');
             document.getElementById('txDetailButtons').classList.add('hidden');
             document.getElementById('txEditButtons').classList.remove('hidden');
 
+            document.getElementById('editTxType').value = tx.type;
             document.getElementById('editTxAmount').value = tx.amount;
             document.getElementById('editTxDescription').value = tx.description || '';
+            document.getElementById('editTxTag').value = tx.tag || '';
             document.getElementById('editTxDate').value = tx.date;
 
-            if (tx.type === 'income') {
-                document.getElementById('editCategoryWrapper').classList.add('hidden');
-                document.getElementById('editPaymentWrapper').classList.add('hidden');
-            } else {
-                document.getElementById('editCategoryWrapper').classList.remove('hidden');
-                document.getElementById('editPaymentWrapper').classList.remove('hidden');
+            const catSelect = document.getElementById('editTxCategory');
+            catSelect.innerHTML = '';
+            Object.keys(categories).forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c; opt.innerText = c;
+                if (c === tx.category) opt.selected = true;
+                catSelect.appendChild(opt);
+            });
 
-                const catSelect = document.getElementById('editTxCategory');
-                catSelect.innerHTML = '';
-                Object.keys(categories).forEach(c => {
-                    const opt = document.createElement('option');
-                    opt.value = c;
-                    opt.innerText = c;
-                    if (c === tx.category) opt.selected = true;
-                    catSelect.appendChild(opt);
-                });
-
-                const pmSelect = document.getElementById('editTxPaymentMethod');
-                pmSelect.innerHTML = '';
-                Object.keys(paymentMethods).forEach(pm => {
-                    const opt = document.createElement('option');
-                    opt.value = pm;
-                    opt.innerText = pm;
-                    let pmKeys = Object.keys(paymentMethods);
-                    let currentPm = tx.paymentMethod && paymentMethods[tx.paymentMethod] ? tx.paymentMethod : (pmKeys[0] || '');
-                    if (pm === currentPm) opt.selected = true;
-                    pmSelect.appendChild(opt);
-                });
-            }
+            const pmSelect = document.getElementById('editTxPaymentMethod');
+            pmSelect.innerHTML = '';
+            Object.keys(paymentMethods).forEach(pm => {
+                const opt = document.createElement('option');
+                opt.value = pm; opt.innerText = pm;
+                if (pm === tx.paymentMethod) opt.selected = true;
+                pmSelect.appendChild(opt);
+            });
         }
 
         function cancelEditMode() {
@@ -1460,25 +1325,32 @@
             const tx = transactions[selectedTxIdForDetail];
             if (!tx) return;
 
-            tx.amount = Number(document.getElementById('editTxAmount').value);
+            let rawAmount = document.getElementById('editTxAmount').value;
+            let amount = 0;
+            try { amount = eval(rawAmount); } catch(e) { amount = Number(rawAmount) || tx.amount; }
+
+            tx.type = document.getElementById('editTxType').value;
+            tx.amount = Number(amount.toFixed(2));
             if (tx.type === 'expense') {
                 tx.category = document.getElementById('editTxCategory').value;
                 tx.paymentMethod = document.getElementById('editTxPaymentMethod').value;
+            } else {
+                tx.category = 'הכנסה';
             }
             tx.description = document.getElementById('editTxDescription').value;
+            tx.tag = document.getElementById('editTxTag').value;
             tx.date = document.getElementById('editTxDate').value;
 
             if (window.dbInstance) {
                 window.dbInstance.set(window.dbInstance.ref(window.dbInstance.db, `families/${familyCode}/transactions/${selectedTxIdForDetail}`), tx);
             }
-
             closeTxDetailModal();
             renderApp();
-            alert('התנועה עודכנה בהצלחה!');
+            alert('הפעולה עודכנה בהצלחה!');
         }
 
         function deleteTxFromModal() {
-            if (!confirm('למחק תנועה זו?')) return;
+            if (!confirm('למחוק פעולה זו?')) return;
             if (window.dbInstance) {
                 window.dbInstance.remove(window.dbInstance.ref(window.dbInstance.db, `families/${familyCode}/transactions/${selectedTxIdForDetail}`));
             } else {
@@ -1491,8 +1363,7 @@
         function duplicateTx() {
             const tx = transactions[selectedTxIdForDetail];
             if (!tx) return;
-            if (!confirm('לשכפל תנועה זו?')) return;
-
+            if (!confirm('לשכפל פעולה זו?')) return;
             const newTx = { ...tx, date: new Date().toISOString().split('T')[0] };
             if (window.dbInstance) {
                 const newRef = window.dbInstance.push(window.dbInstance.ref(window.dbInstance.db, `families/${familyCode}/transactions`));
@@ -1503,59 +1374,45 @@
         }
 
         function renderSettingsView() {
-            // Render Excel color palette for Category (Add)
             const gridEl = document.getElementById('presetColorsGrid');
             gridEl.innerHTML = '';
             let currentSelectedColor = document.getElementById('selectedPresetColor').value;
-
-            excelColorMatrix.forEach((rowShades, rowIdx) => {
+            excelColorMatrix.forEach((rowShades) => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'flex gap-1 justify-center';
-                rowShades.forEach((hexColor, colIdx) => {
+                rowShades.forEach((hexColor) => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = `w-7 h-7 rounded-lg transition-transform hover:scale-110 border-2 ${currentSelectedColor.toLowerCase() === hexColor.toLowerCase() ? 'border-gray-900 dark:border-white scale-110 shadow-md ring-2 ring-zen-500' : 'border-transparent'}`;
                     btn.style.backgroundColor = hexColor;
-                    btn.title = `עומק ${colIdx + 1}`;
-                    btn.onclick = () => {
-                        document.getElementById('selectedPresetColor').value = hexColor;
-                        renderSettingsView();
-                    };
+                    btn.onclick = () => { document.getElementById('selectedPresetColor').value = hexColor; renderSettingsView(); };
                     rowDiv.appendChild(btn);
                 });
                 gridEl.appendChild(rowDiv);
             });
 
-            // Render Excel color palette for Payment Method (Add)
             const pmGridEl = document.getElementById('presetPaymentColorsGrid');
             pmGridEl.innerHTML = '';
             let currentSelectedPmColor = document.getElementById('selectedPaymentColor').value;
-
-            excelColorMatrix.forEach((rowShades, rowIdx) => {
+            excelColorMatrix.forEach((rowShades) => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'flex gap-1 justify-center';
-                rowShades.forEach((hexColor, colIdx) => {
+                rowShades.forEach((hexColor) => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = `w-7 h-7 rounded-lg transition-transform hover:scale-110 border-2 ${currentSelectedPmColor.toLowerCase() === hexColor.toLowerCase() ? 'border-gray-900 dark:border-white scale-110 shadow-md ring-2 ring-zen-500' : 'border-transparent'}`;
                     btn.style.backgroundColor = hexColor;
-                    btn.title = `עומק ${colIdx + 1}`;
-                    btn.onclick = () => {
-                        document.getElementById('selectedPaymentColor').value = hexColor;
-                        renderSettingsView();
-                    };
+                    btn.onclick = () => { document.getElementById('selectedPaymentColor').value = hexColor; renderSettingsView(); };
                     rowDiv.appendChild(btn);
                 });
                 pmGridEl.appendChild(rowDiv);
             });
 
-            // Render Existing Categories with Click-to-Open Excel Palette
             const manageEl = document.getElementById('manageCategoriesList');
             manageEl.innerHTML = '';
             Object.entries(categories).forEach(([name, data]) => {
                 const row = document.createElement('div');
                 row.className = 'flex flex-col p-3 bg-gray-50 dark:bg-[#0d1110] rounded-xl text-xs gap-3 border dark:border-[#1f2b27]';
-                
                 let paletteId = `cat_palette_${name.replace(/\s+/g, '_')}`;
                 let paletteHTML = `<div id="${paletteId}" class="hidden space-y-1 bg-white dark:bg-[#141c1a] p-2 rounded-xl border dark:border-[#1f2b27] mt-2">`;
                 excelColorMatrix.forEach(rowShades => {
@@ -1575,35 +1432,25 @@
                             <span class="font-bold-custom">${name}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <div class="flex items-center gap-1">
-                                <span>תקציב: ₪</span><input type="number" value="${data.budget}" onchange="updateCategoryBudget('${name}', this.value)" class="w-16 bg-white dark:bg-[#18221f] border dark:border-[#1f2b27] rounded p-1 text-xs">
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <input type="checkbox" ${data.showAlerts !== false ? 'checked' : ''} onchange="updateCategoryAlertsToggle('${name}', this.checked)" title="הצג התראות חריגה" class="accent-zen-500 w-4 h-4">
-                                <span class="text-[10px] text-gray-500">התראות</span>
-                            </div>
-                            <button onclick="deleteCategory('${name}')" class="text-red-500 hover:text-red-700 font-bold px-1">✕</button>
+                            <div class="flex items-center gap-1"><span>תקציב: ₪</span><input type="number" value="${data.budget}" onchange="updateCategoryBudget('${name}', this.value)" class="w-16 bg-white dark:bg-[#18221f] border dark:border-[#1f2b27] rounded p-1 text-xs"></div>
+                            <div class="flex items-center gap-1"><input type="checkbox" ${data.showAlerts !== false ? 'checked' : ''} onchange="updateCategoryAlertsToggle('${name}', this.checked)" title="הצג התראות" class="accent-zen-500 w-4 h-4"><span class="text-[10px] text-gray-500">התראות</span></div>
+                            <button onclick="deleteCategory('${name}')" class="text-red-500 font-bold px-1">✕</button>
                         </div>
                     </div>
                     ${paletteHTML}
                 `;
                 manageEl.appendChild(row);
             });
-
             renderPaymentMethodsSettings();
         }
 
         function renderPaymentMethodsSettings() {
             const pmListEl = document.getElementById('managePaymentMethodsList');
             pmListEl.innerHTML = '';
-            if (Object.keys(paymentMethods).length === 0) {
-                pmListEl.innerHTML = `<div class="text-xs text-gray-400 py-1">אין דרכי תשלום מוגדרות.</div>`;
-                return;
-            }
+            if (Object.keys(paymentMethods).length === 0) { pmListEl.innerHTML = `<div class="text-xs text-gray-400 py-1">אין דרכי תשלום.</div>`; return; }
             Object.entries(paymentMethods).forEach(([pmName, pmData]) => {
                 const row = document.createElement('div');
                 row.className = 'flex flex-col p-3 bg-gray-50 dark:bg-[#0d1110] rounded-xl text-xs gap-3 border dark:border-[#1f2b27]';
-                
                 let paletteId = `pm_palette_${pmName.replace(/\s+/g, '_')}`;
                 let paletteHTML = `<div id="${paletteId}" class="hidden space-y-1 bg-white dark:bg-[#141c1a] p-2 rounded-xl border dark:border-[#1f2b27] mt-2">`;
                 excelColorMatrix.forEach(rowShades => {
@@ -1618,10 +1465,8 @@
 
                 row.innerHTML = `
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="toggleColorPalette('${paletteId}')" class="px-2.5 py-1 rounded text-white font-bold-custom shadow-md cursor-pointer hover:scale-105 transition-transform" style="background-color: ${pmData.color}" title="לחץ לשינוי צבע">${pmData.icon} ${pmName}</button>
-                        </div>
-                        <button onclick="deletePaymentMethod('${pmName}')" class="text-red-500 hover:text-red-700 font-bold px-1">✕</button>
+                        <div class="flex items-center gap-2"><button type="button" onclick="toggleColorPalette('${paletteId}')" class="px-2.5 py-1 rounded text-white font-bold-custom shadow-md cursor-pointer hover:scale-105 transition-transform" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</button></div>
+                        <button onclick="deletePaymentMethod('${pmName}')" class="text-red-500 font-bold px-1">✕</button>
                     </div>
                     ${paletteHTML}
                 `;
@@ -1629,61 +1474,28 @@
             });
         }
 
-        function toggleColorPalette(paletteId) {
-            const el = document.getElementById(paletteId);
-            if (el) {
-                el.classList.toggle('hidden');
-            }
-        }
-
-        function updateCategoryColor(catName, newColor) {
-            if (categories[catName]) {
-                categories[catName].color = newColor;
-                saveToDB();
-                renderSettingsView();
-            }
-        }
-
-        function updatePaymentMethodColor(pmName, newColor) {
-            if (paymentMethods[pmName]) {
-                paymentMethods[pmName].color = newColor;
-                saveToDB();
-                renderSettingsView();
-            }
-        }
+        function toggleColorPalette(paletteId) { const el = document.getElementById(paletteId); if (el) el.classList.toggle('hidden'); }
+        function updateCategoryColor(catName, newColor) { if (categories[catName]) { categories[catName].color = newColor; saveToDB(); renderSettingsView(); } }
+        function updatePaymentMethodColor(pmName, newColor) { if (paymentMethods[pmName]) { paymentMethods[pmName].color = newColor; saveToDB(); renderSettingsView(); } }
 
         function addPaymentMethod() {
             const input = document.getElementById('newPaymentMethodInput');
-            const iconSel = document.getElementById('newPaymentMethodIcon');
-            const colorSel = document.getElementById('selectedPaymentColor');
             const val = input.value.trim();
             if (!val) return;
-            if (paymentMethods[val]) return alert('דרך תשלום זו כבר קיימת');
-            paymentMethods[val] = { icon: iconSel.value, color: colorSel.value };
+            if (paymentMethods[val]) return alert('דרך תשלום קיימת');
+            paymentMethods[val] = { icon: document.getElementById('newPaymentMethodIcon').value, color: document.getElementById('selectedPaymentColor').value };
             input.value = '';
             saveToDB();
             renderSettingsView();
         }
 
-        function deletePaymentMethod(pmName) {
-            delete paymentMethods[pmName];
-            saveToDB();
-            renderSettingsView();
-        }
-
-        function updateCategoryBudget(catName, newBudget) {
-            categories[catName].budget = Number(newBudget);
-            saveToDB();
-        }
-
-        function updateCategoryAlertsToggle(catName, isChecked) {
-            categories[catName].showAlerts = isChecked;
-            saveToDB();
-        }
+        function deletePaymentMethod(pmName) { delete paymentMethods[pmName]; saveToDB(); renderSettingsView(); }
+        function updateCategoryBudget(catName, newBudget) { categories[catName].budget = Number(newBudget); saveToDB(); }
+        function updateCategoryAlertsToggle(catName, isChecked) { categories[catName].showAlerts = isChecked; saveToDB(); }
 
         function deleteCategory(catName) {
             if (Object.keys(categories).length <= 1) return alert('חייבת להישאר לפחות קטגוריה אחת');
-            if (!confirm(`האם למחוק את הקטגוריה "${catName}"?`)) return;
+            if (!confirm(`למחק את "${catName}"?`)) return;
             delete categories[catName];
             saveToDB();
             renderSettingsView();
@@ -1691,19 +1503,14 @@
 
         function addNewCategoryFromSettings() {
             const name = document.getElementById('settingNewCatName').value.trim();
-            const color = document.getElementById('selectedPresetColor').value;
-            const budget = Number(document.getElementById('settingNewCatBudget').value) || 1000;
-            const showAlerts = document.getElementById('settingNewCatAlerts').checked;
-
-            if (!name) return alert('נא להזין שם קטגוריה');
-            if (categories[name]) return alert('קטגוריה בשם זה כבר קיימת');
-
-            categories[name] = { color, budget, showAlerts };
+            if (!name) return alert('נא להזין שם');
+            if (categories[name]) return alert('קטגוריה קיימת');
+            categories[name] = { color: document.getElementById('selectedPresetColor').value, budget: Number(document.getElementById('settingNewCatBudget').value) || 1000, showAlerts: true };
             document.getElementById('settingNewCatName').value = '';
             document.getElementById('settingNewCatBudget').value = '';
             saveToDB();
             renderSettingsView();
-            alert('הקטגוריה נוספה בהצלחה!');
+            alert('הקטגוריה נוספה!');
         }
 
         function openAddModal() {
@@ -1711,71 +1518,25 @@
             populateDropdowns();
             populatePopularDescriptions();
             setFormType('expense');
+            document.getElementById('txDate').valueAsDate = new Date();
         }
 
         function closeAddModal() {
             document.getElementById('addModal').classList.add('hidden');
             document.getElementById('inlineNewCatBox').classList.add('hidden');
-            document.getElementById('smartParseInput').value = '';
             document.getElementById('modalOverBudgetWarning').classList.add('hidden');
-        }
-
-        function handleCameraCapture(event) {
-            const file = event.target.files[0];
-            if (file) {
-                alert('הקבלה צולמה בהצלחה! מזהה נתונים...');
-                document.getElementById('smartParseInput').value = 'סופר סנטר 452.10 אשראי #קניות';
-                parseSmartText();
-            }
-        }
-
-        function parseSmartText() {
-            const raw = document.getElementById('smartParseInput').value.trim();
-            if (!raw) return alert('נא להזין טקסט לפענוח');
-
-            let words = raw.split(' ');
-            let numbers = words.map(w => parseFloat(w.replace(/[^\d.]/g, ''))).filter(n => !isNaN(n) && n > 0);
-            
-            if (numbers.length > 0) {
-                let maxAmount = Math.max(...numbers);
-                document.getElementById('txAmount').value = maxAmount;
-                checkFormBudgetImpact();
-            }
-
-            Object.keys(categories).forEach(cat => {
-                if (raw.includes(cat)) {
-                    document.getElementById('txCategory').value = cat;
-                }
-            });
-
-            Object.keys(paymentMethods).forEach(pm => {
-                if (raw.includes(pm)) {
-                    document.getElementById('txPaymentMethod').value = pm;
-                }
-            });
-
-            document.getElementById('txDescription').value = raw;
-            alert('הטקסט פוענח בהצלחה והסכום חולץ!');
         }
 
         function setFormType(type) {
             formType = type;
-            const recLabel = document.getElementById('recurringLabelText');
-            const tagWrapper = document.getElementById('tagInputWrapper');
-            const receiptBox = document.getElementById('expenseReceiptBox');
             const cardContainer = document.getElementById('addModalContainerCard');
             const mainTitle = document.getElementById('addModalMainTitle');
-
             if (type === 'expense') {
                 document.getElementById('typeExpBtn').className = 'py-2 rounded-lg font-semibold text-xs transition-all bg-white dark:bg-[#141c1a] shadow-sm';
                 document.getElementById('typeIncBtn').className = 'py-2 rounded-lg font-semibold text-xs transition-all text-gray-500';
                 document.getElementById('categoryContainer').style.display = 'block';
                 document.getElementById('paymentMethodContainer').style.display = 'block';
                 document.getElementById('installmentWrapper').style.display = 'block';
-                recLabel.innerText = 'הוצאה קבועה?';
-                tagWrapper.style.display = 'block';
-                receiptBox.style.display = 'block';
-                
                 cardContainer.className = 'bg-white dark:bg-[#141c1a] w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 max-h-[90vh] overflow-y-auto border-t-8 border-red-500 transition-all shadow-2xl';
                 mainTitle.innerText = 'הוספת הוצאה חדשה';
             } else {
@@ -1784,10 +1545,6 @@
                 document.getElementById('categoryContainer').style.display = 'none';
                 document.getElementById('paymentMethodContainer').style.display = 'none';
                 document.getElementById('installmentWrapper').style.display = 'none';
-                recLabel.innerText = 'הכנסה קבועה?';
-                tagWrapper.style.display = 'none';
-                receiptBox.style.display = 'none';
-
                 cardContainer.className = 'bg-white dark:bg-[#141c1a] w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 max-h-[90vh] overflow-y-auto border-t-8 border-green-500 transition-all shadow-2xl';
                 mainTitle.innerText = 'הוספת הכנסה חדשה';
             }
@@ -1796,43 +1553,23 @@
 
         function checkFormBudgetImpact() {
             const warningEl = document.getElementById('modalOverBudgetWarning');
-            const warningMsg = document.getElementById('modalOverBudgetMessage');
-            if (formType !== 'expense') {
-                warningEl.classList.add('hidden');
-                return;
-            }
-
-            const catSelect = document.getElementById('txCategory');
-            const catName = catSelect.value;
-            const rawAmount = document.getElementById('txAmount').value;
+            if (formType !== 'expense') { warningEl.classList.add('hidden'); return; }
+            const catName = document.getElementById('txCategory').value;
             let amount = 0;
-            try { amount = eval(rawAmount); } catch(e) { amount = Number(rawAmount) || 0; }
-
-            if (!catName || amount <= 0 || !categories[catName]) {
-                warningEl.classList.add('hidden');
-                return;
-            }
+            try { amount = eval(document.getElementById('txAmount').value); } catch(e) { amount = Number(document.getElementById('txAmount').value) || 0; }
+            if (!catName || amount <= 0 || !categories[catName]) { warningEl.classList.add('hidden'); return; }
 
             let spentSoFar = 0;
             Object.values(transactions).forEach(tx => {
                 if (tx.type === 'expense' && tx.category === catName) {
                     let d = new Date(tx.date);
-                    if (d.getMonth() + 1 === currentMonth && d.getFullYear() === currentYear) {
-                        spentSoFar += Number(tx.amount);
-                    }
+                    if (d.getMonth() + 1 === currentMonth && d.getFullYear() === currentYear) spentSoFar += Number(tx.amount);
                 }
             });
-
             const budget = categories[catName].budget || 0;
-            if (budget > 0) {
-                let newTotal = spentSoFar + amount;
-                if (newTotal > budget) {
-                    let overPct = Math.round((newTotal / budget) * 100);
-                    warningMsg.innerText = `שים לב: הוצאה זו תביא את קטגוריית "${catName}" ל-${overPct}% מהתקציב (₪${newTotal.toFixed(2)} מתוך ₪${budget})`;
-                    warningEl.classList.remove('hidden');
-                } else {
-                    warningEl.classList.add('hidden');
-                }
+            if (budget > 0 && (spentSoFar + amount) > budget) {
+                document.getElementById('modalOverBudgetMessage').innerText = `שים לב: הוצאה זו תעבור את תקציב קטגוריית "${catName}"!`;
+                warningEl.classList.remove('hidden');
             } else {
                 warningEl.classList.add('hidden');
             }
@@ -1844,28 +1581,18 @@
         }
 
         function handleCategorySelectChange(selectEl) {
-            if (selectEl.value === '__add_new__') {
-                document.getElementById('inlineNewCatBox').classList.remove('hidden');
-            } else {
-                document.getElementById('inlineNewCatBox').classList.add('hidden');
-            }
+            if (selectEl.value === '__add_new__') document.getElementById('inlineNewCatBox').classList.remove('hidden');
+            else document.getElementById('inlineNewCatBox').classList.add('hidden');
             checkFormBudgetImpact();
         }
 
         function saveInlineNewCategory() {
             const name = document.getElementById('inlineNewCatNameInput').value.trim();
             const budget = Number(document.getElementById('inlineNewCatBudgetInput').value) || 1000;
-            if (!name) return alert('נא להזין שם קטגוריה');
-            if (categories[name]) return alert('קטגוריה זו כבר קיימת');
-
-            let randomColor = '#3b82f6';
-            categories[name] = { color: randomColor, budget: budget, showAlerts: true };
+            if (!name || categories[name]) return alert('שם לא תקין או קיים');
+            categories[name] = { color: '#3b82f6', budget: budget, showAlerts: true };
             saveToDB();
-
-            document.getElementById('inlineNewCatNameInput').value = '';
-            document.getElementById('inlineNewCatBudgetInput').value = '';
             document.getElementById('inlineNewCatBox').classList.add('hidden');
-            
             populateDropdowns();
             document.getElementById('txCategory').value = name;
             checkFormBudgetImpact();
@@ -1882,28 +1609,22 @@
             select.innerHTML = '';
             Object.keys(categories).forEach(cat => {
                 const opt = document.createElement('option');
-                opt.value = cat;
-                opt.innerText = cat;
+                opt.value = cat; opt.innerText = cat;
                 select.appendChild(opt);
             });
             const addOpt = document.createElement('option');
-            addOpt.value = '__add_new__';
-            addOpt.innerText = '+ הוסף קטגוריה חדשה...';
+            addOpt.value = '__add_new__'; addOpt.innerText = '+ הוסף קטגוריה חדשה...';
             select.appendChild(addOpt);
 
             const pmSelect = document.getElementById('txPaymentMethod');
             pmSelect.innerHTML = '';
             let pmKeys = Object.keys(paymentMethods);
             if (pmKeys.length === 0) {
-                const opt = document.createElement('option');
-                opt.value = 'מזומן';
-                opt.innerText = 'מזומן (ברירת מחדל)';
-                pmSelect.appendChild(opt);
+                pmSelect.innerHTML = '<option value="מזומן">מזומן</option>';
             } else {
                 pmKeys.forEach(pm => {
                     const opt = document.createElement('option');
-                    opt.value = pm;
-                    opt.innerText = pm;
+                    opt.value = pm; opt.innerText = pm;
                     pmSelect.appendChild(opt);
                 });
             }
@@ -1913,9 +1634,7 @@
             const listEl = document.getElementById('popularDescriptions');
             listEl.innerHTML = '';
             let uniqueDesc = new Set();
-            Object.values(transactions).forEach(t => {
-                if (t.description) uniqueDesc.add(t.description);
-            });
+            Object.values(transactions).forEach(t => { if (t.description) uniqueDesc.add(t.description); });
             uniqueDesc.forEach(desc => {
                 const opt = document.createElement('option');
                 opt.value = desc;
@@ -1927,50 +1646,27 @@
             e.preventDefault();
             let rawAmount = document.getElementById('txAmount').value;
             let amount = 0;
-            try {
-                amount = eval(rawAmount);
-            } catch (err) {
-                amount = Number(rawAmount);
-            }
+            try { amount = eval(rawAmount); } catch (err) { amount = Number(rawAmount) || 0; }
 
             let pmKeys = Object.keys(paymentMethods);
-            const category = formType === 'expense' ? document.getElementById('txCategory').value : 'הכנסה';
-            const paymentMethod = formType === 'expense' ? document.getElementById('txPaymentMethod').value : (pmKeys[0] || 'מזומן');
-            const isRecurring = document.getElementById('txIsRecurring').checked;
-            const isInstallment = formType === 'expense' ? document.getElementById('txIsInstallment').checked : false;
-            
-            const instTotal = Number(document.getElementById('txInstallmentsCount').value) || 5;
-            const instCurrent = Number(document.getElementById('txInstallmentCurrent').value) || 1;
-            
-            const description = document.getElementById('txDescription').value;
-            const tag = formType === 'expense' ? document.getElementById('txTag').value : '';
-            const date = document.getElementById('txDate').value;
-
-            let installmentsText = isInstallment ? `תשלום ${instCurrent} מתוך ${instTotal}` : null;
-
             const newTx = {
                 type: formType,
                 amount: Number(amount.toFixed(2)),
-                category: category,
-                paymentMethod: paymentMethod,
-                isRecurring: isRecurring,
-                isInstallment: isInstallment,
-                installmentsText: installmentsText,
-                description: description,
-                tag: tag,
-                date: date,
+                category: formType === 'expense' ? document.getElementById('txCategory').value : 'הכנסה',
+                paymentMethod: formType === 'expense' ? document.getElementById('txPaymentMethod').value : (pmKeys[0] || 'מזומן'),
+                isRecurring: document.getElementById('txIsRecurring').checked,
+                isInstallment: formType === 'expense' ? document.getElementById('txIsInstallment').checked : false,
+                installmentsText: document.getElementById('txIsInstallment').checked ? `תשלום ${document.getElementById('txInstallmentCurrent').value} מתוך ${document.getElementById('txInstallmentsCount').value}` : null,
+                description: document.getElementById('txDescription').value,
+                tag: formType === 'expense' ? document.getElementById('txTag').value : '',
+                date: document.getElementById('txDate').value,
                 user: currentUser
             };
 
             if (window.dbInstance) {
                 const newRef = window.dbInstance.push(window.dbInstance.ref(window.dbInstance.db, `families/${familyCode}/transactions`));
                 window.dbInstance.set(newRef, newTx);
-            } else {
-                const id = 'tx_' + Date.now();
-                transactions[id] = newTx;
-                renderApp();
             }
-
             document.getElementById('transactionForm').reset();
             document.getElementById('txDate').valueAsDate = new Date();
             setFormType('expense');
@@ -1986,16 +1682,14 @@
         }
 
         function exportToCSV() {
-            let csv = '\uFEFFתאריך,סוג,קטגוריה,דרך תשלום,סכום,תיאור,תיוג,משתמש,קבוע\n';
+            let csv = '\uFEFFתאריך,סוג,קטגוריה,דרך תשלום,סכום,תיאור,תיוג,משתמש,קבוע/מסגרת\n';
             Object.values(transactions).forEach(tx => {
                 csv += `"${tx.date}","${tx.type === 'income' ? 'הכנסה' : 'הוצאה'}","${tx.category || ''}","${tx.paymentMethod || ''}","${tx.amount}","${tx.description || ''}","${tx.tag || ''}","${tx.user}","${tx.isRecurring ? 'כן' : 'לא'}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `taktsiv_plus_${currentYear}_${currentMonth}.csv`;
-            a.click();
+            a.href = url; a.download = `taktsiv_plus_${currentYear}_${currentMonth}.csv`; a.click();
         }
     </script>
 </body>
