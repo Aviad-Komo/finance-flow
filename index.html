@@ -101,7 +101,7 @@
         </div>
     </header>
 
-    <!-- Sidebar Menu -->
+    <!-- Sidebar Menu (עם פרטי משתמש וקוד מרחב בתחתית) -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity" onclick="toggleSidebar()"></div>
     <aside id="sidebar" class="fixed top-0 right-0 bottom-0 w-72 bg-white dark:bg-[#141c1a] z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col p-6 overflow-y-auto border-l dark:border-[#1f2b27]">
         <div class="flex justify-between items-center mb-6 border-b dark:border-[#1f2b27] pb-4">
@@ -136,11 +136,16 @@
             </button>
         </nav>
 
-        <div class="pt-4 border-t dark:border-[#1f2b27] mt-auto space-y-2">
-            <button onclick="promptChangeUser()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-semibold text-xs transition-colors">
+        <!-- Sidebar Footer: Session Info & Actions -->
+        <div class="pt-4 border-t dark:border-[#1f2b27] mt-auto space-y-2 text-xs">
+            <div class="bg-gray-50 dark:bg-[#0d1110] p-3 rounded-xl border dark:border-[#1f2b27] space-y-1 text-gray-500">
+                <div class="flex justify-between"><span>👤 משתמש:</span> <strong id="sidebarUserName" class="text-gray-800 dark:text-gray-200">...</strong></div>
+                <div class="flex justify-between"><span>🏠 קוד מרחב:</span> <strong id="sidebarFamilyCode" class="text-zen-500 font-mono">...</strong></div>
+            </div>
+            <button onclick="promptChangeUser()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-semibold transition-colors">
                 <span>👤</span> החלף משתמש / שנוי שם
             </button>
-            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 font-semibold text-xs transition-colors">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 font-semibold transition-colors">
                 <span>🚪</span> התנתק מהמרחב
             </button>
         </div>
@@ -232,7 +237,7 @@
                 </div>
 
                 <div class="flex justify-between items-center pt-1">
-                    <h3 class="font-bold-custom text-sm">פעולות אחרונות</h3>
+                    <h3 class="font-bold-custom text-sm">פעולות אחרונות (מסודרות כרונולוגית לפי תאריך)</h3>
                 </div>
                 <div id="recentTransactionsList" class="space-y-2 max-h-60 overflow-y-auto"></div>
             </div>
@@ -274,10 +279,13 @@
             </div>
         </div>
 
-        <!-- 5. SETTINGS VIEW -->
+        <!-- 5. SETTINGS VIEW (עם כפתור שמירה מרוכז להגדרות) -->
         <div id="settingsView" class="view-section hidden">
             <div class="bg-white dark:bg-[#141c1a] p-5 rounded-3xl shadow-sm mb-4 space-y-4 border dark:border-[#1f2b27]">
-                <h3 class="font-bold-custom text-base border-b dark:border-[#1f2b27] pb-3">הגדרות מערכת ומרחב משפחתי</h3>
+                <div class="flex justify-between items-center border-b dark:border-[#1f2b27] pb-3">
+                    <h3 class="font-bold-custom text-base">הגדרות מערכת ומרחב משפחתי</h3>
+                    <button onclick="saveAllSettingsManual()" class="bg-zen-500 hover:bg-zen-600 text-white px-4 py-2 rounded-xl text-xs font-bold-custom shadow-md">💾 שמור הגדרות</button>
+                </div>
                 
                 <!-- Main Section: קטגוריות -->
                 <div class="space-y-2">
@@ -313,7 +321,7 @@
                                 <input type="checkbox" id="settingNewCatAlerts" checked class="w-4 h-4 accent-zen-500 rounded">
                                 <label for="settingNewCatAlerts" class="text-xs text-gray-600 dark:text-gray-300">הצג התראות חריגה עבור קטגוריה זו</label>
                             </div>
-                            <button onclick="addNewCategoryFromSettings()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">שמור והוסף קטגוריה</button>
+                            <button onclick="addNewCategoryFromSettings()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">הוסף קטגוריה לרשימה</button>
                         </div>
                     </div>
                 </div>
@@ -353,7 +361,7 @@
                                 <div id="presetPaymentColorsGrid" class="space-y-1 bg-gray-50 dark:bg-[#0d1110] p-2.5 rounded-xl border dark:border-[#1f2b27]"></div>
                                 <input type="hidden" id="selectedPaymentColor" value="#3b82f6">
                             </div>
-                            <button onclick="addPaymentMethod()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">שמור והוסף דרך תשלום</button>
+                            <button onclick="addPaymentMethod()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">הוסף דרך תשלום לרשימה</button>
                         </div>
                     </div>
                 </div>
@@ -368,6 +376,10 @@
                             <button onclick="navigator.clipboard.writeText(familyCode); alert('הקוד הועתק ללוח!');" class="bg-gray-200 dark:bg-[#1f2b27] px-3 py-2 rounded-xl text-xs font-semibold">העתק קוד</button>
                         </div>
                     </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="saveAllSettingsManual()" class="w-full bg-zen-500 hover:bg-zen-600 text-white font-bold-custom py-3 rounded-xl text-sm shadow-md">💾 שמור את כל השינויים בהגדרות</button>
                 </div>
 
             </div>
@@ -389,7 +401,7 @@
                     <div id="catBudgetProgressBar" class="bg-zen-500 h-full transition-all" style="width: 0%"></div>
                 </div>
                 <div class="flex justify-between items-center text-xs text-gray-400">
-                    <span id="catBudgetRemaining">נותר לניצול: ₪0</span>
+                    <span id="catBudgetRemaining">נותר: ₪0</span>
                     <span id="catComparisonIndicator" class="font-bold-custom"></span>
                 </div>
             </div>
@@ -489,7 +501,7 @@
         </div>
     </div>
 
-    <!-- View / Edit Transaction Details Modal (עם חופש עריכה מלא) -->
+    <!-- View / Edit Transaction Details Modal -->
     <div id="txDetailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-[#141c1a] w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative border dark:border-[#1f2b27]">
             <div id="modalHeaderBanner" class="p-4 text-white font-bold-custom flex justify-between items-center bg-zen-500">
@@ -638,11 +650,11 @@
         };
 
         const helpContent = {
-            dashboard: { title: 'עזרה - מסך הבית', text: 'מסך הבית מרכז את התקציב החודשי, כולל פעולות עתידיות שנקבעו כמסגרת לחודש. • חצים: מעבר חודשים. • עוגה: התפלגות הוצאות.' },
-            expensesList: { title: 'עזרה - הוצאות', text: 'ריכוז קטגוריות ההוצאה וניצול התקציב החודשי.' },
+            dashboard: { title: 'עזרה - מסך הבית', text: 'מרכז את התקציב והמסגרת החודשית. הפעולות מסודרות כרונולוגית לפי תאריך ביצוע.' },
+            expensesList: { title: 'עזרה - הוצאות', text: 'ריכוז קטגוריות ההוצאה וניצול התקציב.' },
             forecast: { title: 'עזרה - תחזית', text: 'תחזית חודשית עתידית מבוססת נתונים קודמים.' },
             annual: { title: 'עזרה - סיכום שנתי', text: 'פריסה שנתית של ההוצאות בפועל.' },
-            settings: { title: 'עזרה - הגדרות', text: 'ניהול קטגוריות, צבעים בסגנון Excel וקוד משפחה.' }
+            settings: { title: 'עזרה - הגדרות', text: 'ניהול קטגוריות, צבעי Excel וכפתור שמירה מרוכז.' }
         };
 
         function openHelpForCurrentView() {
@@ -767,7 +779,15 @@
         }
 
         function setUserFilter(usr) { selectedUserFilter = usr; renderUserFilterButtons(); renderApp(); }
-        function updateUserUI() { const badge = document.getElementById('headerUserBadge'); if (badge) badge.innerText = `משתמש: ${currentUser}`; }
+        
+        function updateUserUI() { 
+            const badge = document.getElementById('headerUserBadge'); 
+            if (badge) badge.innerText = `משתמש: ${currentUser}`;
+            const sName = document.getElementById('sidebarUserName');
+            if (sName) sName.innerText = currentUser;
+            const sCode = document.getElementById('sidebarFamilyCode');
+            if (sCode) sCode.innerText = familyCode || 'לא מוגדר';
+        }
 
         function toggleTheme() {
             currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -924,7 +944,6 @@
                         if (matchesUser) totalIncome += Number(tx.amount);
                     }
                 } else {
-                    // כל הוצאה (כולל עתידיות/קבועות שנקבעו כמסגרת לחודש) נכללת מיד בחישוב ובעוגה
                     if (txM === currentMonth && txY === currentYear) {
                         belongsToDisplayMonth = true;
                         if (matchesUser) {
@@ -945,6 +964,7 @@
                 }
             });
 
+            // מיון כרונולוגי לפי תאריך הביצוע בפועל (מהחדש לישן או ישן לחדש - לפי בחירה, כאן מהתאריך המאוחר למוקדם או להיפך)
             recentTxArr.sort((a,b) => new Date(b.date) - new Date(a.date));
 
             recentTxArr.slice(0, 15).forEach(tx => {
@@ -965,7 +985,7 @@
                         ${tx.type === 'expense' ? `<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px]" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>` : '<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px] bg-green-600">💵 הכנסה</span>'}
                         <div>
                             <div class="font-bold-custom">${displayDesc}</div>
-                            <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• מסגרת/קבוע' : ''}</div>
+                            <div class="text-gray-400 text-[10px]">📅 תאריך: ${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• מסגרת/קבוע' : ''}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
@@ -1220,7 +1240,7 @@
                             ${tx.type === 'expense' ? `<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px]" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>` : '💵'}
                             <div>
                                 <div class="font-bold-custom">${displayDesc}</div>
-                                <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user}</div>
+                                <div class="text-gray-400 text-[10px]">📅 תאריך: ${tx.date} | ${tx.user}</div>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -1253,7 +1273,7 @@
                         <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-green-500 text-center">₪${tx.amount.toFixed(2)}</span></div>
                     </div>
                     ${tx.description ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${tx.description}</div>` : ''}
-                    <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-xs">${tx.user} • ${tx.date}</div>
+                    <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-xs">📅 תאריך: ${tx.date} • ${tx.user}</div>
                 `;
             } else {
                 banner.className = 'p-4 text-white font-bold-custom flex justify-between items-center bg-red-600';
@@ -1272,7 +1292,7 @@
                     ${fullDescHTML ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${fullDescHTML}</div>` : ''}
                     <div class="grid grid-cols-2 gap-2.5">
                         <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="px-2.5 py-1 rounded-lg text-white text-[11px] font-bold-custom inline-block text-center" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span></div>
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-semibold text-xs text-center">${tx.user} • ${tx.date}</span></div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-semibold text-xs text-center">📅 ${tx.date} • ${tx.user}</span></div>
                     </div>
                 `;
             }
@@ -1432,8 +1452,8 @@
                             <span class="font-bold-custom">${name}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <div class="flex items-center gap-1"><span>תקציב: ₪</span><input type="number" value="${data.budget}" onchange="updateCategoryBudget('${name}', this.value)" class="w-16 bg-white dark:bg-[#18221f] border dark:border-[#1f2b27] rounded p-1 text-xs"></div>
-                            <div class="flex items-center gap-1"><input type="checkbox" ${data.showAlerts !== false ? 'checked' : ''} onchange="updateCategoryAlertsToggle('${name}', this.checked)" title="הצג התראות" class="accent-zen-500 w-4 h-4"><span class="text-[10px] text-gray-500">התראות</span></div>
+                            <div class="flex items-center gap-1"><span>תקציב: ₪</span><input type="number" id="budget_cat_${name}" value="${data.budget}" class="w-16 bg-white dark:bg-[#18221f] border dark:border-[#1f2b27] rounded p-1 text-xs"></div>
+                            <div class="flex items-center gap-1"><input type="checkbox" id="alert_cat_${name}" ${data.showAlerts !== false ? 'checked' : ''} title="הצג התראות" class="accent-zen-500 w-4 h-4"><span class="text-[10px] text-gray-500">התראות</span></div>
                             <button onclick="deleteCategory('${name}')" class="text-red-500 font-bold px-1">✕</button>
                         </div>
                     </div>
@@ -1475,8 +1495,20 @@
         }
 
         function toggleColorPalette(paletteId) { const el = document.getElementById(paletteId); if (el) el.classList.toggle('hidden'); }
-        function updateCategoryColor(catName, newColor) { if (categories[catName]) { categories[catName].color = newColor; saveToDB(); renderSettingsView(); } }
-        function updatePaymentMethodColor(pmName, newColor) { if (paymentMethods[pmName]) { paymentMethods[pmName].color = newColor; saveToDB(); renderSettingsView(); } }
+        function updateCategoryColor(catName, newColor) { if (categories[catName]) { categories[catName].color = newColor; renderSettingsView(); } }
+        function updatePaymentMethodColor(pmName, newColor) { if (paymentMethods[pmName]) { paymentMethods[pmName].color = newColor; renderSettingsView(); } }
+
+        // פונקציית שמירה ידנית מרוכזת להגדרות (מונעת התנגשויות)
+        function saveAllSettingsManual() {
+            Object.keys(categories).forEach(catName => {
+                const bInput = document.getElementById(`budget_cat_${catName}`);
+                const aInput = document.getElementById(`alert_cat_${catName}`);
+                if (bInput) categories[catName].budget = Number(bInput.value) || 0;
+                if (aInput) categories[catName].showAlerts = aInput.checked;
+            });
+            saveToDB();
+            alert('הגדרות המערכת נשמרו בהצלחה!');
+        }
 
         function addPaymentMethod() {
             const input = document.getElementById('newPaymentMethodInput');
@@ -1487,11 +1519,10 @@
             input.value = '';
             saveToDB();
             renderSettingsView();
+            alert('דרך התשלום נוספה בהצלחה!');
         }
 
         function deletePaymentMethod(pmName) { delete paymentMethods[pmName]; saveToDB(); renderSettingsView(); }
-        function updateCategoryBudget(catName, newBudget) { categories[catName].budget = Number(newBudget); saveToDB(); }
-        function updateCategoryAlertsToggle(catName, isChecked) { categories[catName].showAlerts = isChecked; saveToDB(); }
 
         function deleteCategory(catName) {
             if (Object.keys(categories).length <= 1) return alert('חייבת להישאר לפחות קטגוריה אחת');
@@ -1510,7 +1541,7 @@
             document.getElementById('settingNewCatBudget').value = '';
             saveToDB();
             renderSettingsView();
-            alert('הקטגוריה נוספה!');
+            alert('הקטגוריה נוספה בהצלחה!');
         }
 
         function openAddModal() {
