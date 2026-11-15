@@ -40,12 +40,12 @@
 </head>
 <body class="bg-[#f4f7f5] text-gray-800 dark:bg-[#0d1110] dark:text-gray-100 min-h-screen transition-colors duration-300">
 
-    <!-- 1. Splash Screen / Clean Logo Loader -->
+    <!-- 1. Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 bg-[#0d1110] z-50 flex flex-col items-center justify-center text-white transition-opacity duration-500">
         <img src="https://raw.githubusercontent.com/Aviad-Komo/finance-flow/main/%D7%A2%D7%99%D7%A6%D7%95%D7%91%20%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D%20(5).png" onerror="this.src='https://i.postimg.cc/qM9z7X2b/logo.png'" alt="תקציב פלוס" class="w-48 h-48 md:w-64 md:h-64 rounded-3xl object-contain animate-pulse">
     </div>
 
-    <!-- 2. Family Connection / Setup & User Wizard Modal -->
+    <!-- 2. Family Connection / Setup Modal -->
     <div id="setupModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-[#141c1a] w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-5 border dark:border-[#1f2b27] text-center">
             <img src="https://raw.githubusercontent.com/Aviad-Komo/finance-flow/main/%D7%A2%D7%99%D7%A6%D7%95%D7%91%20%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D%20(5).png" onerror="this.src='https://i.postimg.cc/qM9z7X2b/logo.png'" alt="לוגו" class="w-16 h-16 rounded-2xl mx-auto shadow-md object-contain">
@@ -62,13 +62,13 @@
             </div>
             <div id="setupStep3" class="space-y-4 hidden">
                 <p class="text-xs text-gray-500 dark:text-gray-400">הקש את שמך האישי שיופיע בפעולות שתבצע באפליקציה:</p>
-                <input type="text" id="userNameField" placeholder="למשל: אביעד, קרן, בודק..." class="w-full bg-gray-50 dark:bg-[#0d1110] border dark:border-[#1f2b27] rounded-xl p-3 text-center text-sm font-bold-custom">
+                <input type="text" id="userNameField" placeholder="למשל: אביעד, קרן..." class="w-full bg-gray-50 dark:bg-[#0d1110] border dark:border-[#1f2b27] rounded-xl p-3 text-center text-sm font-bold-custom">
                 <button onclick="finishUserNameSetup()" class="w-full bg-zen-500 hover:bg-zen-600 text-white font-bold-custom py-3 rounded-xl text-sm shadow-md">שמור והתחל עבודה</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. Interactive Contextual Tooltip Help Modal -->
+    <!-- 3. Help Modal -->
     <div id="helpModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-[#141c1a] w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-3 border dark:border-[#1f2b27]">
             <div class="flex justify-between items-center border-b dark:border-[#1f2b27] pb-2">
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <!-- Header / Navbar -->
+    <!-- Header -->
     <header class="bg-white dark:bg-[#141c1a] shadow-sm sticky top-0 z-30 px-4 py-3 flex justify-between items-center border-b dark:border-[#1f2b27]">
         <div class="flex items-center gap-3">
             <button onclick="toggleSidebar()" class="p-2 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-lg">☰</button>
@@ -92,16 +92,12 @@
             <div class="bg-gray-100 dark:bg-[#1f2b27] px-3 py-1.5 rounded-xl text-xs font-semibold text-zen-500" id="headerUserBadge">
                 משתמש: טוען...
             </div>
-            <button onclick="toggleTheme()" class="p-2 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-sm">
-                <span id="themeIcon">🌙</span>
-            </button>
-            <button onclick="openHelpForCurrentView()" class="w-9 h-9 rounded-2xl bg-zen-500/10 hover:bg-zen-500/20 text-zen-600 dark:text-zen-400 flex items-center justify-center text-sm font-bold shadow-sm transition-colors" title="הסבר ועזרה למסך זה">
-                💡
-            </button>
+            <button onclick="toggleTheme()" class="p-2 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-sm"><span id="themeIcon">🌙</span></button>
+            <button onclick="openHelpForCurrentView()" class="w-9 h-9 rounded-2xl bg-zen-500/10 hover:bg-zen-500/20 text-zen-600 dark:text-zen-400 flex items-center justify-center text-sm font-bold shadow-sm transition-colors" title="עזרה">💡</button>
         </div>
     </header>
 
-    <!-- Sidebar Menu -->
+    <!-- Sidebar -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity" onclick="toggleSidebar()"></div>
     <aside id="sidebar" class="fixed top-0 right-0 bottom-0 w-72 bg-white dark:bg-[#141c1a] z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col p-6 overflow-y-auto border-l dark:border-[#1f2b27]">
         <div class="flex justify-between items-center mb-6 border-b dark:border-[#1f2b27] pb-4">
@@ -116,38 +112,21 @@
         </div>
 
         <nav class="space-y-2 flex-1">
-            <button onclick="switchView('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right">
-                <span>🏠</span> מסך הבית
-            </button>
-            <button onclick="openCategoryDetail('הכנסות')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right text-green-500">
-                <span>💵</span> הכנסות
-            </button>
-            <button onclick="switchView('expensesList')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right text-red-500">
-                <span>💸</span> הוצאות
-            </button>
-            <button onclick="switchView('forecast')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right">
-                <span>📊</span> בניית תקציב
-            </button>
-            <button onclick="switchView('annual')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right">
-                <span>📅</span> סיכום שנתי
-            </button>
-            <button onclick="switchView('settings')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right border-t border-gray-100 dark:border-[#1f2b27] pt-3 mt-2">
-                <span>⚙️</span> הגדרות
-            </button>
+            <button onclick="switchView('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right"><span>🏠</span> מסך הבית</button>
+            <button onclick="openCategoryDetail('הכנסות')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right text-green-500"><span>💵</span> הכנסות</button>
+            <button onclick="switchView('expensesList')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right text-red-500"><span>💸</span> הוצאות</button>
+            <button onclick="switchView('forecast')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right"><span>📊</span> בניית תקציב</button>
+            <button onclick="switchView('annual')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right"><span>📅</span> סיכום שנתי</button>
+            <button onclick="switchView('settings')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-[#1f2b27] font-semibold text-sm transition-colors text-right border-t border-gray-100 dark:border-[#1f2b27] pt-3 mt-2"><span>⚙️</span> הגדרות</button>
         </nav>
 
-        <!-- Sidebar Footer: User & Family Code Info -->
         <div class="pt-4 border-t dark:border-[#1f2b27] mt-auto space-y-2 text-xs">
             <div class="bg-gray-50 dark:bg-[#0d1110] p-3 rounded-xl border dark:border-[#1f2b27] space-y-1 text-gray-500">
                 <div class="flex justify-between"><span>👤 משתמש:</span> <strong id="sidebarUserName" class="text-gray-800 dark:text-gray-200">...</strong></div>
                 <div class="flex justify-between"><span>🏠 קוד מרחב:</span> <strong id="sidebarFamilyCode" class="text-zen-500 font-mono">...</strong></div>
             </div>
-            <button onclick="promptChangeUser()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-semibold transition-colors">
-                <span>👤</span> החלף משתמש / שנוי שם
-            </button>
-            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 font-semibold transition-colors">
-                <span>🚪</span> התנתק מהמרחב
-            </button>
+            <button onclick="promptChangeUser()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gray-100 dark:bg-[#1f2b27] text-gray-700 dark:text-gray-200 font-semibold transition-colors"><span>👤</span> החלף משתמש / שינוי שם</button>
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 font-semibold transition-colors"><span>🚪</span> התנתק מהמרחב</button>
         </div>
     </aside>
 
@@ -237,7 +216,7 @@
                 </div>
 
                 <div class="flex justify-between items-center pt-1">
-                    <h3 class="font-bold-custom text-sm">פעולות אחרונות (מסודרות כרונולוגית)</h3>
+                    <h3 class="font-bold-custom text-sm">פעולות אחרונות</h3>
                 </div>
                 <div id="recentTransactionsList" class="space-y-2 max-h-60 overflow-y-auto"></div>
             </div>
@@ -279,10 +258,10 @@
             </div>
         </div>
 
-        <!-- 5. SETTINGS VIEW (שמירה אוטומטית שקטה בלחיצה מחוץ לשדה) -->
+        <!-- 5. SETTINGS VIEW -->
         <div id="settingsView" class="view-section hidden">
             <div class="bg-white dark:bg-[#141c1a] p-5 rounded-3xl shadow-sm mb-4 space-y-4 border dark:border-[#1f2b27]">
-                <h3 class="font-bold-custom text-base border-b dark:border-[#1f2b27] pb-3">הגדרות מערכת ומרחב משפחתי (שמירה אוטומטית)</h3>
+                <h3 class="font-bold-custom text-base border-b dark:border-[#1f2b27] pb-3">הגדרות מערכת ומרחב משפחתי</h3>
                 
                 <!-- Main Section: קטגוריות -->
                 <div class="space-y-2">
@@ -318,7 +297,7 @@
                                 <input type="checkbox" id="settingNewCatAlerts" checked class="w-4 h-4 accent-zen-500 rounded">
                                 <label for="settingNewCatAlerts" class="text-xs text-gray-600 dark:text-gray-300">הצג התראות חריגה עבור קטגוריה זו</label>
                             </div>
-                            <button onclick="addNewCategoryFromSettings()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">הוסף קטגוריה לרשימה</button>
+                            <button onclick="addNewCategoryFromSettings()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">שמור והוסף קטגוריה</button>
                         </div>
                     </div>
                 </div>
@@ -358,7 +337,7 @@
                                 <div id="presetPaymentColorsGrid" class="space-y-1 bg-gray-50 dark:bg-[#0d1110] p-2.5 rounded-xl border dark:border-[#1f2b27]"></div>
                                 <input type="hidden" id="selectedPaymentColor" value="#3b82f6">
                             </div>
-                            <button onclick="addPaymentMethod()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">הוסף דרך תשלום לרשימה</button>
+                            <button onclick="addPaymentMethod()" class="w-full bg-zen-500 text-white font-bold-custom py-2.5 rounded-xl text-xs shadow-sm">שמור והוסף דרך תשלום</button>
                         </div>
                     </div>
                 </div>
@@ -394,7 +373,7 @@
                     <div id="catBudgetProgressBar" class="bg-zen-500 h-full transition-all" style="width: 0%"></div>
                 </div>
                 <div class="flex justify-between items-center text-xs text-gray-400">
-                    <span id="catBudgetRemaining">נותר: ₪0</span>
+                    <span id="catBudgetRemaining">נותר לניצול: ₪0</span>
                     <span id="catComparisonIndicator" class="font-bold-custom"></span>
                 </div>
             </div>
@@ -616,9 +595,9 @@
             'אוכל': { color: '#22c55e', budget: 3500, showAlerts: true },
             'ביטוחים': { color: '#eab308', budget: 800, showAlerts: true },
             'נסיעות': { color: '#0f766e', budget: 600, showAlerts: true },
-            'פנאי/בילויים': { color: '#ef4444', budget: 1000, showAlerts: true },
+            'פנאי-בילויים': { color: '#ef4444', budget: 1000, showAlerts: true },
             'בריאות': { color: '#8b5cf6', budget: 500, showAlerts: true },
-            'חיסכון/השקעות': { color: '#1d4ed8', budget: 2000, showAlerts: true }
+            'חיסכון-השקעות': { color: '#1d4ed8', budget: 2000, showAlerts: true }
         };
 
         let paymentMethods = {};
@@ -957,7 +936,7 @@
                 }
             });
 
-            // מיון כרונולוגי לפי תאריך ביצוע בפועל
+            // מיון כרונולוגי נקי
             recentTxArr.sort((a,b) => new Date(b.date) - new Date(a.date));
 
             recentTxArr.slice(0, 15).forEach(tx => {
@@ -978,7 +957,7 @@
                         ${tx.type === 'expense' ? `<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px]" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>` : '<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px] bg-green-600">💵 הכנסה</span>'}
                         <div>
                             <div class="font-bold-custom">${displayDesc}</div>
-                            <div class="text-gray-400 text-[10px]">📅 תאריך: ${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• מסגרת/קבוע' : ''}</div>
+                            <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user} ${tx.installmentsText ? '• ' + tx.installmentsText : ''} ${tx.isRecurring ? '• מסגרת/קבוע' : ''}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
@@ -1233,7 +1212,7 @@
                             ${tx.type === 'expense' ? `<span class="px-2 py-1 rounded-lg text-white font-bold text-[10px]" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span>` : '💵'}
                             <div>
                                 <div class="font-bold-custom">${displayDesc}</div>
-                                <div class="text-gray-400 text-[10px]">📅 תאריך: ${tx.date} | ${tx.user}</div>
+                                <div class="text-gray-400 text-[10px]">${tx.date} | ${tx.user}</div>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -1266,7 +1245,7 @@
                         <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-bold-custom text-base text-green-500 text-center">₪${tx.amount.toFixed(2)}</span></div>
                     </div>
                     ${tx.description ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${tx.description}</div>` : ''}
-                    <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-xs">📅 תאריך: ${tx.date} • ${tx.user}</div>
+                    <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-xs">${tx.date} • ${tx.user}</div>
                 `;
             } else {
                 banner.className = 'p-4 text-white font-bold-custom flex justify-between items-center bg-red-600';
@@ -1285,7 +1264,7 @@
                     ${fullDescHTML ? `<div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl text-center font-semibold text-sm">${fullDescHTML}</div>` : ''}
                     <div class="grid grid-cols-2 gap-2.5">
                         <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="px-2.5 py-1 rounded-lg text-white text-[11px] font-bold-custom inline-block text-center" style="background-color: ${pmData.color}">${pmData.icon} ${pmName}</span></div>
-                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-semibold text-xs text-center">📅 ${tx.date} • ${tx.user}</span></div>
+                        <div class="bg-gray-50 dark:bg-[#0d1110] p-3.5 rounded-2xl flex items-center justify-center"><span class="font-semibold text-xs text-center">${tx.date} • ${tx.user}</span></div>
                     </div>
                 `;
             }
@@ -1346,7 +1325,7 @@
             tx.amount = Number(amount.toFixed(2));
             if (tx.type === 'expense') {
                 tx.category = document.getElementById('editTxCategory').value;
-                tx.paymentMethod = document.getElementById('editTxPaymentMethod'].value;
+                tx.paymentMethod = document.getElementById('editTxPaymentMethod').value;
             } else {
                 tx.category = 'הכנסה';
             }
@@ -1426,7 +1405,7 @@
             Object.entries(categories).forEach(([name, data]) => {
                 const row = document.createElement('div');
                 row.className = 'flex flex-col p-3 bg-gray-50 dark:bg-[#0d1110] rounded-xl text-xs gap-3 border dark:border-[#1f2b27]';
-                let paletteId = `cat_palette_${name.replace(/\s+/g, '_')}`;
+                let paletteId = `cat_palette_${name.replace(/[\/\s]+/g, '_')}`;
                 let paletteHTML = `<div id="${paletteId}" class="hidden space-y-1 bg-white dark:bg-[#141c1a] p-2 rounded-xl border dark:border-[#1f2b27] mt-2">`;
                 excelColorMatrix.forEach(rowShades => {
                     paletteHTML += `<div class="flex gap-1 justify-center">`;
@@ -1464,7 +1443,7 @@
             Object.entries(paymentMethods).forEach(([pmName, pmData]) => {
                 const row = document.createElement('div');
                 row.className = 'flex flex-col p-3 bg-gray-50 dark:bg-[#0d1110] rounded-xl text-xs gap-3 border dark:border-[#1f2b27]';
-                let paletteId = `pm_palette_${pmName.replace(/\s+/g, '_')}`;
+                let paletteId = `pm_palette_${pmName.replace(/[\/\s]+/g, '_')}`;
                 let paletteHTML = `<div id="${paletteId}" class="hidden space-y-1 bg-white dark:bg-[#141c1a] p-2 rounded-xl border dark:border-[#1f2b27] mt-2">`;
                 excelColorMatrix.forEach(rowShades => {
                     paletteHTML += `<div class="flex gap-1 justify-center">`;
@@ -1505,7 +1484,6 @@
             } 
         }
 
-        // שמירה אוטומטית שקטה בעת יציאה משדה (Blur) בהגדרות
         function autoSaveCategory(catName) {
             const bInput = document.getElementById(`budget_cat_${catName}`);
             const aInput = document.getElementById(`alert_cat_${catName}`);
@@ -1707,13 +1685,12 @@
             closeAddModal();
         }
 
-        // פונקציית ניקוי מפתחות אוטומטית (Sanitization) למניעת שגיאות Firebase בתווים מיוחדים כמו /
+        // ניקוי מפתחות אוטומטי (Sanitization) שמסיר תווים בעייתיים (כמו /) אך שומר את השמות נקיים ב-Firebase
         function sanitizeCategoriesForDB(cats) {
             let clean = {};
             Object.keys(cats).forEach(name => {
-                let safeKey = name.replace(/[\/\.#\$\[\]]/g, '_');
+                let safeKey = name.replace(/[\/\.#\$\[\]]/g, '-');
                 clean[safeKey] = {
-                    displayName: name,
                     color: cats[name].color,
                     budget: cats[name].budget,
                     showAlerts: cats[name].showAlerts !== false
